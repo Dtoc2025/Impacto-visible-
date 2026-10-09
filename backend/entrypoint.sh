@@ -2,7 +2,7 @@
 set -e
 
 echo " Aplicando migraciones de Prisma..."
-pnpm exec prisma migrate deploy
+npx prisma migrate deploy
 
 echo " Verificando si la base de datos ya tiene datos..."
 USER_COUNT=$(node -e "
@@ -18,11 +18,11 @@ echo "  → Usuarios en DB: [$USER_COUNT]"
 
 if [ "$USER_COUNT" = "0" ] || [ -z "$USER_COUNT" ]; then
   echo "🌱 Base de datos vacía, ejecutando seed..."
-  pnpm exec prisma db seed
+  npx tsx prisma/seed.ts
   echo " Seed completado."
 else
   echo " Base de datos ya tiene datos, saltando seed."
 fi
 
 echo " Iniciando backend..."
-exec pnpm dev
+exec npx tsx watch src/server.ts
