@@ -6,10 +6,12 @@ RUN apt-get update -y && apt-get install -y openssl ca-certificates && rm -rf /v
 
 COPY package.json ./
 
+# npm install normal ahora instala TODO porque prisma, tsx y typescript están en dependencies
 RUN npm install --legacy-peer-deps
 
 COPY . .
 
+# Ahora prisma SÍ está disponible
 RUN npx prisma generate
 
 RUN chmod +x entrypoint.sh
