@@ -1,0 +1,8 @@
+[build]
+  base = "frontend"
+  command = "pnpm install && pnpm build"
+  publish = "dist/frontend/browser"
+
+[build.environment]
+  NODE_VERSION = "20"
+  PNPM_VERSION = "9"
