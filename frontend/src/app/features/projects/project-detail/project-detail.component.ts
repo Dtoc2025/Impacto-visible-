@@ -5,11 +5,12 @@ import { ProjectService } from '../../../core/services/project.service';
 import { Project } from '../../../core/models/project.model';
 import { AuthService } from '../../../core/services/auth.service';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
+import { ImageUrlPipe } from '../../../shared/pipes/image-url.pipe';
 
 @Component({
   selector: 'app-project-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink, IconComponent],
+  imports: [CommonModule, RouterLink, IconComponent, ImageUrlPipe],
   template: `
     @if (loading()) {
       <div class="bg-ink-50 bg-grid min-h-[calc(100vh-4rem)]">
@@ -28,11 +29,10 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
             Volver a proyectos
           </a>
 
-          <!-- Galería principal -->
           <div class="mb-8">
             <div class="relative rounded-3xl overflow-hidden aspect-[16/9] bg-ink-900">
               @if (currentImage()) {
-                <img [src]="currentImage()" class="w-full h-full object-cover" [alt]="project()!.title" />
+                <img [src]="currentImage() | imageUrl" class="w-full h-full object-cover" [alt]="project()!.title" />
               } @else {
                 <div class="w-full h-full bg-gradient-to-br from-primary-100 to-accent-100"></div>
               }
@@ -63,7 +63,6 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
               </div>
             </div>
 
-            <!-- Miniaturas -->
             @if (gallery().length > 1) {
               <div class="grid grid-cols-5 md:grid-cols-6 gap-2 mt-3">
                 @for (img of gallery(); track img) {
@@ -71,7 +70,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
                     class="relative aspect-square rounded-xl overflow-hidden border-2 transition"
                     [class.border-primary-600]="currentImage() === img"
                     [class.border-transparent]="currentImage() !== img">
-                    <img [src]="img" class="w-full h-full object-cover" />
+                    <img [src]="img | imageUrl" class="w-full h-full object-cover" />
                   </button>
                 }
               </div>
@@ -79,10 +78,8 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
           </div>
 
           <div class="grid lg:grid-cols-3 gap-8">
-            <!-- Columna principal -->
             <div class="lg:col-span-2 space-y-6">
 
-              <!-- Descripción -->
               <div class="bg-white rounded-3xl border border-ink-200 p-8 shadow-soft">
                 <h2 class="text-xl font-bold mb-4 text-ink-900 flex items-center gap-2">
                   <span class="w-1 h-6 bg-primary-500 rounded"></span>
@@ -91,7 +88,6 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
                 <p class="text-ink-700 whitespace-pre-line leading-relaxed">{{ project()!.description }}</p>
               </div>
 
-              <!-- Impacto -->
               @if (project()!.impact) {
                 <div class="relative bg-gradient-to-br from-primary-50 to-accent-50 rounded-3xl border border-primary-100 p-8 overflow-hidden">
                   <div class="absolute top-0 right-0 w-48 h-48 bg-primary-200/40 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
@@ -107,7 +103,6 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
                 </div>
               }
 
-              <!-- Organización -->
               @if (project()!.organizer) {
                 <div class="bg-white rounded-3xl border border-ink-200 p-8 shadow-soft">
                   <h2 class="text-xl font-bold mb-5 text-ink-900 flex items-center gap-2">
@@ -134,7 +129,6 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
                 </div>
               }
 
-              <!-- Donaciones -->
               @if (project()!.donations && project()!.donations!.length > 0) {
                 <div class="bg-white rounded-3xl border border-ink-200 p-8 shadow-soft">
                   <h2 class="text-xl font-bold mb-5 text-ink-900 flex items-center gap-2">
@@ -164,11 +158,8 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
               }
             </div>
 
-            <!-- Sidebar -->
             <div class="lg:col-span-1">
               <div class="sticky top-24 space-y-4">
-
-                <!-- Card progreso -->
                 <div class="bg-white rounded-3xl border border-ink-200 p-6 shadow-elevated">
                   <div class="mb-5">
                     <div class="flex items-baseline gap-2 mb-3">
@@ -208,7 +199,6 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
                   }
                 </div>
 
-                <!-- Card seguridad -->
                 <div class="bg-white rounded-3xl border border-ink-200 p-6">
                   <div class="flex items-center gap-3 mb-3">
                     <div class="w-10 h-10 rounded-xl bg-success-50 text-success-600 flex items-center justify-center">

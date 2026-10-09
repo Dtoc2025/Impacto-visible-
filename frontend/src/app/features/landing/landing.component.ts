@@ -5,11 +5,12 @@ import { ProjectService } from '../../core/services/project.service';
 import { DashboardService, DashboardStats } from '../../core/services/dashboard.service';
 import { Project } from '../../core/models/project.model';
 import { IconComponent } from '../../shared/components/icon/icon.component';
+import { ImageUrlPipe } from '../../shared/pipes/image-url.pipe';
 
 @Component({
   selector: 'app-landing',
   standalone: true,
-  imports: [CommonModule, RouterLink, IconComponent],
+  imports: [CommonModule, RouterLink, IconComponent, ImageUrlPipe],
   template: `
     <!-- HERO -->
     <section class="relative overflow-hidden bg-white">
@@ -59,7 +60,6 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
           </div>
         </div>
 
-        <!-- Stats grid -->
         <div class="lg:col-span-5 relative">
           <div class="grid grid-cols-2 gap-4 animate-scale-in">
             @for (s of statsCards(); track s.label; let i = $index) {
@@ -150,7 +150,7 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
 
               <div class="relative aspect-[16/10] overflow-hidden bg-ink-100">
                 @if (p.imageUrl) {
-                  <img [src]="p.imageUrl" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" [alt]="p.title" />
+                  <img [src]="p.imageUrl | imageUrl" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" [alt]="p.title" />
                 } @else {
                   <div class="w-full h-full bg-gradient-to-br from-primary-100 via-accent-100 to-secondary-100"></div>
                 }

@@ -4,11 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../core/services/auth.service';
 import { UploadService } from '../../core/services/upload.service';
 import { IconComponent } from '../../shared/components/icon/icon.component';
+import { ImageUrlPipe } from '../../shared/pipes/image-url.pipe';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule, IconComponent],
+  imports: [CommonModule, FormsModule, IconComponent, ImageUrlPipe],
   template: `
     <div class="bg-ink-50 bg-grid min-h-[calc(100vh-4rem)]">
       <div class="max-w-3xl mx-auto px-6 py-12">
@@ -32,20 +33,14 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
           </div>
         }
 
-        <!-- Card principal -->
         <div class="bg-white rounded-3xl border border-ink-200 shadow-soft overflow-hidden">
-
-          <!-- Franja superior decorativa -->
           <div class="h-3 bg-gradient-to-r from-primary-600 via-primary-500 to-secondary-500"></div>
 
-          <!-- Bloque de identidad -->
           <div class="p-8 border-b border-ink-100">
             <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
-
-              <!-- Avatar -->
               <div class="relative shrink-0">
                 @if (avatarPreview() && avatarPreview() !== '') {
-                  <img [src]="avatarPreview()"
+                  <img [src]="avatarPreview() | imageUrl"
                     class="w-24 h-24 rounded-full object-cover ring-4 ring-primary-50 shadow-elevated"
                     (error)="avatarPreview.set('')" />
                 } @else {
@@ -59,7 +54,6 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
                 </label>
               </div>
 
-              <!-- Info -->
               <div class="flex-1 text-center sm:text-left min-w-0">
                 <h2 class="text-2xl font-bold text-ink-900 truncate">{{ user()?.name }}</h2>
                 <p class="text-ink-500 text-sm mt-1 truncate">{{ user()?.email }}</p>
@@ -78,9 +72,7 @@ import { IconComponent } from '../../shared/components/icon/icon.component';
             </div>
           </div>
 
-          <!-- Formulario -->
           <form (ngSubmit)="save()" class="p-8 space-y-6">
-
             <div>
               <h3 class="text-xs font-bold uppercase tracking-[0.15em] text-ink-500 mb-4">Información personal</h3>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-5">

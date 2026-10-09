@@ -14,6 +14,7 @@ import { Subject, catchError, debounceTime, distinctUntilChanged, of, switchMap,
 import { ProjectService } from '../../../core/services/project.service';
 import { Project, Category } from '../../../core/models/project.model';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
+import { ImageUrlPipe } from '../../../shared/pipes/image-url.pipe';
 
 type FilterKey = 'search' | 'category' | 'urgency' | 'forgotten';
 
@@ -28,7 +29,7 @@ const URGENCIES = [
   selector: 'app-project-list',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, FormsModule, RouterLink, IconComponent],
+  imports: [CommonModule, FormsModule, RouterLink, IconComponent, ImageUrlPipe],
   template: `
     <div class="bg-ink-50 bg-grid min-h-[calc(100vh-4rem)]">
       <div class="max-w-7xl mx-auto px-6 py-12">
@@ -39,12 +40,8 @@ const URGENCIES = [
           <p class="text-lg text-ink-600">Apoya causas reales alrededor del mundo</p>
         </header>
 
-        <!-- Filtros -->
         <section class="bg-white rounded-3xl border border-ink-200 shadow-soft mb-8" aria-label="Filtros de proyectos">
-
           <div class="p-5 flex flex-wrap items-center gap-3">
-
-            <!-- Buscar -->
             <div class="relative flex-1 min-w-[240px]">
               <span class="absolute left-4 top-1/2 -translate-y-1/2 text-ink-400 pointer-events-none">
                 <app-icon name="search" [size]="18" />
@@ -63,7 +60,6 @@ const URGENCIES = [
               }
             </div>
 
-            <!-- Categoría -->
             <div class="relative">
               <select aria-label="Filtrar por categoría"
                 class="h-11 bg-ink-50 hover:bg-ink-100/50 border border-ink-200 focus:border-primary-500 rounded-xl pl-4 pr-10 text-sm font-medium text-ink-700 focus:outline-none focus:ring-2 focus:ring-primary-500/20 transition-all appearance-none cursor-pointer min-w-[160px]"
@@ -78,7 +74,6 @@ const URGENCIES = [
               </span>
             </div>
 
-            <!-- Urgencia -->
             <div class="relative">
               <select aria-label="Filtrar por urgencia"
                 class="h-11 bg-ink-50 hover:bg-ink-100/50 border border-ink-200 focus:border-primary-500 rounded-xl pl-4 pr-10 text-sm font-medium text-ink-700 focus:outline-none focus:ring-2 focus:ring-primary-500/20 transition-all appearance-none cursor-pointer min-w-[140px]"
@@ -93,7 +88,6 @@ const URGENCIES = [
               </span>
             </div>
 
-            <!-- Toggle crisis olvidadas -->
             <button type="button"
               [attr.aria-pressed]="forgotten()"
               aria-label="Filtrar crisis olvidadas"
@@ -120,7 +114,6 @@ const URGENCIES = [
             </button>
           </div>
 
-          <!-- Chips de filtros activos -->
           @if (activeFilters().length) {
             <div class="px-5 pb-5 flex flex-wrap items-center gap-2">
               <span class="text-xs font-bold uppercase tracking-wider text-ink-400 mr-1">Filtros:</span>
@@ -143,9 +136,7 @@ const URGENCIES = [
           }
         </section>
 
-        <!-- Contenido -->
         <div aria-live="polite" [attr.aria-busy]="loading()">
-
           @if (loading()) {
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               @for (i of skeletons; track i) {
@@ -192,7 +183,7 @@ const URGENCIES = [
 
                   <div class="relative aspect-[16/10] overflow-hidden bg-ink-100">
                     @if (p.imageUrl) {
-                      <img [src]="p.imageUrl" [alt]="p.title" loading="lazy" decoding="async"
+                      <img [src]="p.imageUrl | imageUrl" [alt]="p.title" loading="lazy" decoding="async"
                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     } @else {
                       <div class="w-full h-full bg-gradient-to-br from-primary-100 via-accent-100 to-secondary-100"></div>

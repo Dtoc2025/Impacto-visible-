@@ -6,11 +6,12 @@ import { ProjectService } from '../../../core/services/project.service';
 import { UploadService } from '../../../core/services/upload.service';
 import { Category } from '../../../core/models/project.model';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
+import { ImageUrlPipe } from '../../../shared/pipes/image-url.pipe';
 
 @Component({
   selector: 'app-project-form',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, IconComponent],
+  imports: [CommonModule, FormsModule, RouterLink, IconComponent, ImageUrlPipe],
   template: `
     <div class="bg-ink-50 bg-grid min-h-[calc(100vh-4rem)]">
       <div class="max-w-3xl mx-auto px-6 py-12">
@@ -35,7 +36,6 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
 
         <form (ngSubmit)="save()" #f="ngForm" class="space-y-6">
 
-          <!-- Imagen principal -->
           <div class="bg-white rounded-3xl border border-ink-200 overflow-hidden shadow-soft">
             <div class="px-6 py-4 border-b border-ink-100 flex items-center gap-3">
               <div class="w-9 h-9 rounded-xl bg-primary-100 text-primary-600 flex items-center justify-center">
@@ -50,7 +50,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
             <div class="p-6">
               <div class="relative aspect-[16/9] rounded-2xl overflow-hidden bg-ink-100 mb-4">
                 @if (form.imageUrl) {
-                  <img [src]="form.imageUrl" class="w-full h-full object-cover" />
+                  <img [src]="form.imageUrl | imageUrl" class="w-full h-full object-cover" />
                   <button type="button" (click)="form.imageUrl = ''"
                     class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur text-ink-700 hover:bg-white flex items-center justify-center shadow-md transition">
                     <app-icon name="x" [size]="16" />
@@ -75,7 +75,6 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
             </div>
           </div>
 
-          <!-- Galería -->
           <div class="bg-white rounded-3xl border border-ink-200 overflow-hidden shadow-soft">
             <div class="px-6 py-4 border-b border-ink-100 flex items-center gap-3">
               <div class="w-9 h-9 rounded-xl bg-accent-100 text-accent-600 flex items-center justify-center">
@@ -92,7 +91,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
                 <div class="grid grid-cols-3 gap-3 mb-4">
                   @for (img of form.gallery; track img) {
                     <div class="relative group aspect-square rounded-xl overflow-hidden bg-ink-100">
-                      <img [src]="img" class="w-full h-full object-cover" />
+                      <img [src]="img | imageUrl" class="w-full h-full object-cover" />
                       <button type="button" (click)="removeGalleryImage(img)"
                         class="absolute top-2 right-2 w-7 h-7 rounded-full bg-white/90 backdrop-blur text-ink-700 hover:bg-primary-600 hover:text-white flex items-center justify-center shadow-md transition opacity-0 group-hover:opacity-100">
                         <app-icon name="x" [size]="14" />
@@ -114,7 +113,6 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
             </div>
           </div>
 
-          <!-- Info básica -->
           <div class="bg-white rounded-3xl border border-ink-200 overflow-hidden shadow-soft">
             <div class="px-6 py-4 border-b border-ink-100 flex items-center gap-3">
               <div class="w-9 h-9 rounded-xl bg-secondary-100 text-secondary-600 flex items-center justify-center">
@@ -159,7 +157,6 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
             </div>
           </div>
 
-          <!-- Ubicación -->
           <div class="bg-white rounded-3xl border border-ink-200 overflow-hidden shadow-soft">
             <div class="px-6 py-4 border-b border-ink-100 flex items-center gap-3">
               <div class="w-9 h-9 rounded-xl bg-success-50 text-success-600 flex items-center justify-center">
@@ -183,7 +180,6 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
             </div>
           </div>
 
-          <!-- Clasificación -->
           <div class="bg-white rounded-3xl border border-ink-200 overflow-hidden shadow-soft">
             <div class="px-6 py-4 border-b border-ink-100 flex items-center gap-3">
               <div class="w-9 h-9 rounded-xl bg-accent-100 text-accent-600 flex items-center justify-center">
@@ -236,7 +232,6 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
             </div>
           </div>
 
-          <!-- Meta -->
           <div class="bg-white rounded-3xl border border-ink-200 overflow-hidden shadow-soft">
             <div class="px-6 py-4 border-b border-ink-100 flex items-center gap-3">
               <div class="w-9 h-9 rounded-xl bg-primary-100 text-primary-600 flex items-center justify-center">
@@ -257,7 +252,6 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
             </div>
           </div>
 
-          <!-- Botones -->
           <div class="flex flex-col sm:flex-row gap-3 sticky bottom-4 bg-ink-50 pt-4">
             <a routerLink="/manage/projects" class="btn-secondary flex-1 justify-center">
               Cancelar

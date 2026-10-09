@@ -4,16 +4,16 @@ import { RouterLink } from '@angular/router';
 import { ProjectService } from '../../../core/services/project.service';
 import { Project } from '../../../core/models/project.model';
 import { IconComponent } from '../../../shared/components/icon/icon.component';
+import { ImageUrlPipe } from '../../../shared/pipes/image-url.pipe';
 
 @Component({
   selector: 'app-manage-projects',
   standalone: true,
-  imports: [CommonModule, RouterLink, IconComponent],
+  imports: [CommonModule, RouterLink, IconComponent, ImageUrlPipe],
   template: `
     <div class="bg-ink-50 bg-grid min-h-[calc(100vh-4rem)]">
       <div class="max-w-7xl mx-auto px-6 py-12">
 
-        <!-- Header -->
         <div class="flex flex-wrap items-end justify-between gap-4 mb-10">
           <div>
             <p class="eyebrow">Panel de organización</p>
@@ -26,7 +26,6 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
           </a>
         </div>
 
-        <!-- Estado: cargando -->
         @if (loading()) {
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @for (i of [1,2,3]; track i) {
@@ -40,10 +39,7 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
               </div>
             }
           </div>
-        }
-
-        <!-- Estado: vacío -->
-        @else if (projects().length === 0) {
+        } @else if (projects().length === 0) {
           <div class="relative bg-white rounded-3xl border border-ink-200 overflow-hidden">
             <div class="absolute inset-0 bg-mesh-primary opacity-30"></div>
             <div class="relative p-16 text-center">
@@ -58,26 +54,21 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
               </a>
             </div>
           </div>
-        }
-
-        <!-- Lista de proyectos -->
-        @else {
+        } @else {
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @for (p of projects(); track p.id; let i = $index) {
               <div class="group bg-white rounded-3xl border border-ink-200 overflow-hidden hover:shadow-elevated hover:-translate-y-1 transition-all duration-300 flex flex-col animate-fade-in-up"
                 [style.animationDelay]="(i * 60) + 'ms'">
 
-                <!-- Imagen -->
                 <div class="relative aspect-[16/10] bg-ink-100 overflow-hidden">
                   @if (p.imageUrl) {
-                    <img [src]="p.imageUrl" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" [alt]="p.title" />
+                    <img [src]="p.imageUrl | imageUrl" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" [alt]="p.title" />
                   } @else {
                     <div class="w-full h-full bg-gradient-to-br from-primary-100 via-accent-100 to-secondary-100 flex items-center justify-center text-ink-300">
                       <app-icon name="image" [size]="48" />
                     </div>
                   }
 
-                  <!-- Badges -->
                   @if (p.isForgotten) {
                     <span class="absolute top-3 left-3 inline-flex items-center gap-1 bg-primary-600 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full shadow-lg">
                       <app-icon name="alert" [size]="12" />
@@ -86,7 +77,6 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
                   }
                 </div>
 
-                <!-- Contenido -->
                 <div class="p-6 flex-1 flex flex-col">
                   <div class="flex items-center gap-2 mb-3">
                     <span class="chip" [style.background-color]="(p.category.color || '#E5E7EB') + '20'" [style.color]="p.category.color || '#374151'">
@@ -100,7 +90,6 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
                     {{ p.country }}
                   </p>
 
-                  <!-- Progreso -->
                   <div class="mt-auto">
                     <div class="flex justify-between text-sm mb-2">
                       <span class="font-bold text-primary-600">{{ p.raised | currency:'USD':'symbol':'1.0-0' }}</span>
@@ -119,13 +108,12 @@ import { IconComponent } from '../../../shared/components/icon/icon.component';
                     </div>
                   </div>
 
-                  <!-- Acciones -->
                   <div class="flex gap-2 mt-6 pt-4 border-t border-ink-100">
-                    <a [routerLink]="['/projects', p.id]" class="btn-secondary text-sm flex-1 py-2.5">
+                    <a [routerLink]="['/projects', p.id]" class="btn-secondary text-sm flex-1 py-2.5 justify-center">
                       <app-icon name="globe" [size]="14" />
                       Ver
                     </a>
-                    <a [routerLink]="['/manage/projects', p.id, 'edit']" class="btn-primary text-sm flex-1 py-2.5">
+                    <a [routerLink]="['/manage/projects', p.id, 'edit']" class="btn-primary text-sm flex-1 py-2.5 justify-center">
                       <app-icon name="edit" [size]="14" />
                       Editar
                     </a>

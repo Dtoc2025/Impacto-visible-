@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { IconComponent } from '../icon/icon.component';
+import { ImageUrlPipe } from '../../pipes/image-url.pipe';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive, IconComponent],
+  imports: [CommonModule, RouterLink, RouterLinkActive, IconComponent, ImageUrlPipe],
   template: `
     <nav class="bg-white/85 backdrop-blur-xl border-b border-ink-200/70 sticky top-0 z-50">
       <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
@@ -51,7 +52,7 @@ import { IconComponent } from '../icon/icon.component';
               <button (click)="toggleMenu()"
                 class="flex items-center gap-2 hover:bg-ink-100 pl-1 pr-3 py-1 rounded-full transition">
                 @if (auth.currentUser()?.avatarUrl) {
-                  <img [src]="auth.currentUser()!.avatarUrl" class="w-8 h-8 rounded-full object-cover ring-2 ring-primary-200" />
+                  <img [src]="auth.currentUser()!.avatarUrl | imageUrl" class="w-8 h-8 rounded-full object-cover ring-2 ring-primary-200" />
                 } @else {
                   <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-500 to-secondary-500 text-white flex items-center justify-center font-bold text-xs ring-2 ring-primary-200">
                     {{ initials() }}
