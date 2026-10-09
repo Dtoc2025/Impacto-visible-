@@ -1,0 +1,101 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  html, body {
+    @apply bg-ink-50 text-ink-900 font-sans antialiased;
+  }
+  * { @apply box-border; }
+  h1, h2, h3, h4 { @apply font-display tracking-tight; }
+  ::selection { @apply bg-primary-200 text-primary-900; }
+  a, button { @apply transition-colors duration-200; }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2
+           bg-primary-600 hover:bg-primary-700
+           text-white font-semibold py-3 px-6 rounded-xl
+           shadow-primary hover:shadow-lg
+           transition-all duration-200
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-primary
+           focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2
+           bg-white hover:bg-ink-50
+           text-ink-800 font-semibold py-3 px-6 rounded-xl
+           border border-ink-200 hover:border-ink-300
+           shadow-soft hover:shadow-card
+           transition-all duration-200;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2
+           text-ink-600 hover:text-ink-900 hover:bg-ink-100
+           font-medium py-2 px-4 rounded-lg transition;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl border border-ink-200/70 shadow-soft p-6;
+  }
+
+  .card-hover {
+    @apply bg-white rounded-2xl border border-ink-200/70 shadow-soft p-6
+           hover:shadow-elevated hover:border-ink-300 hover:-translate-y-1
+           transition-all duration-300;
+  }
+
+  .input {
+    @apply w-full bg-white border border-ink-200 rounded-xl
+           px-4 py-3 text-ink-900 placeholder-ink-400
+           focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500
+           transition-all duration-200;
+  }
+
+  .label {
+    @apply block text-sm font-semibold text-ink-700 mb-2;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-ink-100 text-ink-700;
+  }
+
+  .link {
+    @apply text-primary-600 hover:text-primary-700 font-semibold transition;
+  }
+
+  .section-title {
+    @apply text-4xl md:text-5xl font-extrabold text-ink-900 tracking-tight;
+  }
+
+  .eyebrow {
+    @apply text-xs font-bold uppercase tracking-[0.2em] text-primary-600 mb-3;
+  }
+
+  .skeleton {
+    @apply bg-ink-100 animate-pulse rounded;
+  }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .line-clamp-1 { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+  .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .bg-grid { background-image: theme('backgroundImage.grid-pattern'); background-size: theme('backgroundSize.grid'); }
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: #F1F5F9; }
+::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: #94A3B8; }

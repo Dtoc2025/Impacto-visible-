@@ -1,0 +1,116 @@
+### Health
+GET http://localhost:4000/api/health
+
+### Categorías
+GET http://localhost:4000/api/categories
+
+### Proyectos
+GET http://localhost:4000/api/projects
+
+### Proyecto por ID
+GET http://localhost:4000/api/projects/1
+
+### Dashboard stats
+aET http://localhost:4000/api/dashboard/stats
+
+### Dashboard por categoría
+GET http://localhost:4000/api/dashboard/by-category
+
+### Registro
+POST http://localhost:4000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "test@test.com",
+  "name": "Test User",
+  "password": "123456"
+}
+
+### Login
+POST http://localhost:4000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "donor@impacto.com",
+  "password": "donor123"
+}
+
+### Perfil (pegar token)
+GET http://localhost:4000/api/auth/me
+Authorization: Bearer PEGA_AQUI_EL_TOKEN
+
+### Crear donación (requiere token)
+POST http://localhost:4000/api/donations
+Authorization: Bearer PEGA_AQUI_EL_TOKEN
+Content-Type: application/json
+
+{
+  "amount": 100,
+  "message": "Buena causa",
+  "projectId": 1
+}
+
+### 1. Login admin
+POST http://localhost:4000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@impacto.com",
+  "password": "admin123"
+}
+
+### 2. Subir imagen (pega el token del login arriba)
+POST http://localhost:4000/api/uploads/single
+Authorization: Bearer PEGA_AQUI_EL_TOKEN
+Content-Type: multipart/form-data; boundary=----Boundary
+
+------Boundary
+Content-Disposition: form-data; name="image"; filename="test.jpg"
+Content-Type: image/jpeg
+
+< ./ruta/a/tu/imagen.jpg
+------Boundary--
+
+
+### Login como ORG
+POST http://localhost:4000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "medicos@impacto.com",
+  "password": "org123"
+}
+
+### Mis proyectos (con token de ORG)
+GET http://localhost:4000/api/projects/mine
+Authorization: Bearer PEGA_TOKEN
+
+### Crear proyecto (como ORG)
+POST http://localhost:4000/api/projects
+Authorization: Bearer PEGA_TOKEN
+Content-Type: application/json
+
+{
+  "title": "Prueba ORG",
+  "subtitle": "Test",
+  "description": "Proyecto de prueba creado por la organización para validar permisos.",
+  "country": "México",
+  "urgency": "MEDIUM",
+  "goal": 1000,
+  "categoryId": 1
+}
+
+### Registro como ORG nueva
+POST http://localhost:4000/api/auth/register
+Content-Type: application/json
+
+{
+  "email": "nuevaorg@test.com",
+  "name": "Juan Pérez",
+  "password": "test123",
+  "role": "ORG",
+  "organizationName": "Fundación Test",
+  "country": "Argentina",
+  "website": "https://test.org",
+  "bio": "Organización de prueba"
+}
