@@ -4,7 +4,9 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
-  private baseUrl = '/api';
+  private baseUrl = window.location.hostname === 'localhost'
+    ? '/api'
+    : 'https://impacto-visible-production.up.railway.app/api';
 
   constructor(private http: HttpClient) {}
 
