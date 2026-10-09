@@ -15,14 +15,8 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 
-// CORS: acepta localhost, Vercel y Railway
 app.use(cors({
-  origin: [
-    'http://localhost:4200',
-    'http://localhost:4000',
-    /\.vercel\.app$/,
-    /\.railway\.app$/,
-  ],
+  origin: true,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
