@@ -1,12 +1,14 @@
 {
   "/api": {
-    "target": "http://localhost:4000",
+    "target": "http://backend:4000",
     "secure": false,
-    "changeOrigin": true
+    "changeOrigin": true,
+    "logLevel": "info"
   },
   "/uploads": {
-    "target": "http://localhost:4000",
+    "target": "http://backend:4000",
     "secure": false,
-    "changeOrigin": true
+    "changeOrigin": true,
+    "logLevel": "info"
   }
 }
