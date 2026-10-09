@@ -4,15 +4,21 @@ WORKDIR /app
 
 RUN apt-get update -y && apt-get install -y openssl ca-certificates && rm -rf /var/lib/apt/lists/*
 
+# Copiar el package.json Y el schema antes de instalar (así la caché se invalida cuando cambian)
 COPY package.json ./
+COPY prisma ./prisma
 
-# npm install normal ahora instala TODO porque prisma, tsx y typescript están en dependencies
+# Instalar dependencias (incluye prisma en dependencies)
 RUN npm install --legacy-peer-deps
 
+# Ahora copiar el resto del código
 COPY . .
 
-# Ahora prisma SÍ está disponible
-RUN npx prisma generate
+# Verificar que prisma esté instalado
+RUN ./node_modules/.bin/prisma --version
+
+# Generar Prisma Client usando el binario LOCAL (evita npx descargando otra versión)
+RUN ./node_modules/.bin/prisma generate --schema=./prisma/schema.prisma
 
 RUN chmod +x entrypoint.sh
 
